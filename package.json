@@ -1,0 +1,28 @@
+{
+  "name": "reactfood",
+  "version": "1.0.0",
+  "description": "for food app",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "test": "jest"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "react"
+  ],
+  "author": "sunny",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-icons": "^5.6.0",
+    "react-router-dom": "^6.22.3",
+    "tailwindcss": "^4.2.2"
+  }
+}
