@@ -1,9 +1,8 @@
 import { useState,useEffect } from "react"
-import { RestaurantCard } from "./RestaurantCard.js"
+import { RestaurantCard,withOpenLabel } from "./RestaurantCard.js"
 import {Shimmer} from "../components/Shimmer.js";
 import { Link } from "react-router-dom";
 import {useOnlineStatus} from "../utils/useOnlineStatus.js"
-
 
 
 
@@ -14,18 +13,23 @@ export const Body = ()=>{
    const [filteredRestaurant,setfilteredRestaurant]=useState([])
    const [searchText,setseactText] = useState("");
 
+   const RestaurantCardOpen = withOpenLabel(RestaurantCard)
+
+   
+
     useEffect(()=>{
         fetchData()
             },[])
 
     const fetchData = async()=>{
-        const data =  await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.6609329&lng=77.2279172&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING")
+        const data =  await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.64363&lng=77.2235803&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING")
     
         const json = await data.json();
+        console.log(json)
     
 
-        setrestaurantList(json.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants||[])
-        setfilteredRestaurant(json.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants ||[])
+        setrestaurantList(json.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants||[])
+        setfilteredRestaurant(json.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants ||[])
         
     }
 
@@ -66,7 +70,8 @@ export const Body = ()=>{
             </div>
             <div className="CardContainer flex flex-wrap">
                 {filteredRestaurant.map((res)=>(
-                    <Link  key = {res.info.id} to={"/restaurants/"+res.info.id} ><RestaurantCard  resData={res}/></Link>
+                    <Link  key = {res?.info?.id} to={"/restaurants/"+res.info.id} >
+                        {res?.info?.isOpen?<RestaurantCardOpen resData={res}/>:<RestaurantCard  resData={res}/>}</Link>
                 ))}
                 
               

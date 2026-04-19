@@ -1,35 +1,55 @@
-import {Shimmer} from "./Shimmer";
-import { useParams } from "react-router-dom";
-import {useRestaurantMenu} from "../utils/useRestaurantMenu.js";
+import { useState } from "react";
+import { useRestaurantMenu } from "../utils/useRestaurantMenu.js";
 
 export const RestaurantMenu = () => {
-  const { resId } = useParams();
-  const resInfo = useRestaurantMenu(resId);
+  const resInfo = useRestaurantMenu();
+  const [openIndex, setOpenIndex] = useState(null);
 
-  if (resInfo === null) return <Shimmer />;
+  if (!resInfo) return <h1>Loading...</h1>;
 
-  const { name, cuisines, costForTwoMessage } =
-    resInfo?.cards[2]?.card?.card?.info;
-
-  const { itemCards } =
-    resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card?.card;
-  // console.log(itemCards);
+  const categories =
+    resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
 
   return (
-    <div className="menu">
-      <h1>{name}</h1>
-      <p>
-        {cuisines.join(" , ")} - {costForTwoMessage}
-      </p>
-      <h2>Menu</h2>
-      <ul>
-        {itemCards.map((item) => (
-          <li key={item.card.info.id}>
-            {item.card.info.name}- {"Rs."}
-            {item.card.info.price / 100 || item.card.info.defaultPrice / 100}
-          </li>
-        ))}
-      </ul>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Menu</h1>
+
+      {categories.map((cat, index) => {
+        const category = cat?.card?.card;
+
+        return (
+          <div key={index} className="mb-4 border rounded-lg">
+            
+            {/* CATEGORY TITLE */}
+            <div
+              className="bg-gray-200 p-3 font-bold cursor-pointer flex justify-between"
+              onClick={() =>
+                setOpenIndex(openIndex === index ? null : index)
+              }
+            >
+              <span>{category?.title}</span>
+              <span>{openIndex === index ? "⬆️" : "⬇️"}</span>
+            </div>
+
+            {/* ITEMS */}
+            {openIndex === index &&
+              category?.itemCards?.map((item) => {
+                const info = item?.card?.info;
+
+                return (
+                  <div
+                    key={info?.id}
+                    className="p-3 border-t flex justify-between"
+                  >
+                    <span>{info?.name}</span>
+                    <span>₹ {info?.price / 100}</span>
+                  </div>
+                );
+              })}
+          </div>
+        );
+      })}
     </div>
   );
 };
+
