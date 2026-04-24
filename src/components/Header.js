@@ -2,10 +2,11 @@ import { FaHome } from "react-icons/fa";
 import { FaCartPlus } from "react-icons/fa";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa";
-import {useEffect, useState} from "react";
+import {useEffect, useState,useContext} from "react";
 import {Link} from "react-router-dom";
 import {useOnlineStatus} from "../utils/useOnlineStatus.js"
-
+import {UserContext} from "../utils/UserContext.js";
+ 
 
 export const Header = ()=>{
 
@@ -13,6 +14,9 @@ export const Header = ()=>{
     const [btnNameReact,setbtnNameReact] = useState("login")
 
     const onlineStatus=useOnlineStatus()
+
+    const data=useContext(UserContext);
+    const {loggedInUser} = data;
 
     
 
@@ -48,6 +52,7 @@ export const Header = ()=>{
                     {btnNameReact}
 
                     </button>
+                    <li  className="flex items-center gap-2 text-2xl underline">{loggedInUser} </li>
 
                 </ul>
             </div>

@@ -7,16 +7,18 @@ import {About} from "./components/About.js"
 import {Contact} from "./components/Contact.js"
 import {Error} from "./components/Error.js"
 import {RestaurantMenu} from "./components/RestaurantMenu.js"
+import {Provider} from "react-redux";
+import { appStore } from "./utils/appStore.js";
 
 
 const Grocery = lazy(()=>import("./components/Grocery.js"))
 
 const AppLayOut = ()=>{
     return (
-        <div>
+        <Provider store={appStore}><div>
         <Header/>
         <Outlet/>
-        </div>)
+        </div></Provider>)
     
 }
 
